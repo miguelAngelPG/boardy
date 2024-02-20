@@ -8,8 +8,6 @@ import { useApiMutation } from "@/hooks/use-api-mutatuion"
 import { api } from "@/convex/_generated/api"
 import { ConfirmModal } from "./confirm-modal"
 import { Button } from "./ui/button"
-import { useState } from "react"
-
 interface ActionsProps {
     children: React.ReactNode
     side?: DropdownMenuContentProps["side"]
@@ -21,8 +19,6 @@ interface ActionsProps {
 }
 
 export const Actions = ({ children, side, sideOffset, id, title, imageUrl, orgId }: ActionsProps) => {
-
-    const [deletedBoard, setDeletedBoard] = useState<string | null>(null)
 
     const { mutate: remove, pending } = useApiMutation(api.board.remove)
     const { mutate: restore } = useApiMutation(api.board.restore)
@@ -42,7 +38,6 @@ export const Actions = ({ children, side, sideOffset, id, title, imageUrl, orgId
     const deleteBoard = () => {
         remove({ id })
         .then(() => {
-            toast.success(`Board "${title}" deleted`)
             toast(`Board "${title}" deleted`, {
                 description: "",
                 action: {
@@ -50,7 +45,6 @@ export const Actions = ({ children, side, sideOffset, id, title, imageUrl, orgId
                   onClick: () => handleUndoBoard(),
                 },
             })
-            setDeletedBoard(id)
         })
         .catch(() => {
             toast.error(`Failed to delete board "${title}"`)
@@ -61,12 +55,10 @@ export const Actions = ({ children, side, sideOffset, id, title, imageUrl, orgId
         restore({ orgId, title, imageUrl })
         .then(() => {
             toast.success(`Board "${title}" restored`)
-            setDeletedBoard(null)
         })
         .catch(() => {
             toast.error(`Failed to restore board "${title}"`)
         })
-        setDeletedBoard(null)
     }
 
     return (

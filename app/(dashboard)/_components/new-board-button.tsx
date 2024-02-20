@@ -38,7 +38,7 @@ export const NewBoardButton = ({ orgId, disabled }: NewBoardButtonProps) => {
             onClick={ handleCreate }
             className={cn(
                 "col-span-1 aspect-[100/127] bg-blue-600 rounded-lg hover:bg-blue-800 flex flex-col justify-center items-center py-6",
-                (pending || disabled) && "cursor-not-allowed opacity-75"
+                (pending || disabled) && "cursor-not-allowed opacity-75 hover:bg-blue-600"
             )}
         >
             <Plus className="h-12 w-12 text-white stroke-1"/>

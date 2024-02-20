@@ -56,6 +56,9 @@ export const BoardCard = ({
 
                         id={id}
                         title={title}
+                        imageUrl={imageUrl}
+                        orgId={orgId}
+
                     >
                         <button 
                             className="absolute opacity-0 top-1 right-1 group-hover:opacity-100 transition-opacity px-3 py-2"

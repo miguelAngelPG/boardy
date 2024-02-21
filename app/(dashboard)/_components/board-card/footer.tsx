@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { on } from "events"
 import { Star } from "lucide-react"
 
 interface FooterProps {
@@ -11,6 +12,15 @@ interface FooterProps {
 }
 
 export const Footer = ({ isFavorite, title, authorLabel, createAtDateLabel, onclick, disabled }: FooterProps) => {
+
+    const handleClick = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.stopPropagation()
+        e.preventDefault()
+        onclick()
+    }
+
     return (
         <footer className="relative bg-white p-3">
             <p className="text-[13px] truncate max-w-[calc(100%-20px)] leading-[20px]">
@@ -20,8 +30,8 @@ export const Footer = ({ isFavorite, title, authorLabel, createAtDateLabel, oncl
                 {authorLabel} - {createAtDateLabel}
             </p>
             <button 
-                disabled={disabled}
-                onClick={onclick}
+                disabled={ disabled }
+                onClick={ handleClick }
                 className={cn(
                     "opacity-0 group-hover:opacity-100 transition absolute top-3 right-3 textmuted-foreground hover:text-blue-600",
                     disabled && "cursor-not-allowed opacity-75"

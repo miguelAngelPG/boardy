@@ -2,12 +2,13 @@
 
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { Link2, Trash2 } from "lucide-react"
+import { Link2, Pencil, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { useApiMutation } from "@/hooks/use-api-mutatuion"
 import { api } from "@/convex/_generated/api"
 import { ConfirmModal } from "./confirm-modal"
 import { Button } from "./ui/button"
+import { useRenameModal } from "@/store/use-rename-modal"
 interface ActionsProps {
     children: React.ReactNode
     side?: DropdownMenuContentProps["side"]
@@ -20,6 +21,7 @@ interface ActionsProps {
 
 export const Actions = ({ children, side, sideOffset, id, title, imageUrl, orgId }: ActionsProps) => {
 
+    const { onOpen } = useRenameModal()
     const { mutate: remove, pending } = useApiMutation(api.board.remove)
     const { mutate: restore } = useApiMutation(api.board.restore)
 
@@ -79,6 +81,13 @@ export const Actions = ({ children, side, sideOffset, id, title, imageUrl, orgId
                     >
                         <Link2 className="h-4 w-4 mr-2"/>
                         Copy board link
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={ () => onOpen(id, title) } 
+                        className="p-3 cursor-pointer"
+                    >
+                        <Pencil className="h-4 w-4 mr-2"/>
+                        Rename board
                     </DropdownMenuItem>
                     <ConfirmModal
                         onConfirm={ deleteBoard }

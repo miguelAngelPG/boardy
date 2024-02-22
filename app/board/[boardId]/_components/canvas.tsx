@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Info } from "./info"
 import { Participants } from "./participants"
 import { Toolbar } from "./toolbar"
@@ -100,6 +100,27 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
     const selections = useOthersMapped((other) => other.presence.selection)
 
+    const onLayerPointerDown = useMutation((
+        { self, setMyPresence },
+        e: React.PointerEvent,
+        layerId: string
+    ) => {  
+        if ( canvasSate.mode === CanvasMode.Pencil || canvasSate.mode === CanvasMode.Inserting ) {
+            return
+        }
+
+        history.pause()
+        e.stopPropagation()
+
+        const point = pointerEventToCanvasPoint(e, camera)
+
+        if (!self.presence.selection.includes(layerId)) {
+            setMyPresence({selection: [layerId]}, { addToHistory: true })
+        }
+
+        setCanvasSate({ mode: CanvasMode.Translating, current: point})
+    }, [setCanvasSate, history, camera, canvasSate.mode])
+
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {}
 
@@ -146,8 +167,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                                 <LayerPreview 
                                     key={layerId} 
                                     layerId={layerId}
-                                    onLayerPinterDown={() => {}}
-                                    selectionColor={layerIdsToColorSelection[layerId]}
+                                    onLayerPinterDown={ onLayerPointerDown }
+                                    selectionColor={ layerIdsToColorSelection[layerId] }
                                 />
                             )}
                         )

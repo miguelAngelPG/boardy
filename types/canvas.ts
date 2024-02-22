@@ -23,8 +23,7 @@ export type RectangleLayer = {
     y: number;
     width: number;
     height: number;
-    color: Color;
-    fill: boolean;
+    fill: Color;
     value?: string;
 }
 
@@ -34,8 +33,7 @@ export type EllipseLayer = {
     y: number;
     width: number;
     height: number;
-    color: Color;
-    fill: boolean;
+    fill: Color;
     value?: string;
 }
 
@@ -45,8 +43,7 @@ export type PathLayer = {
     y: number;
     width: number;
     height: number;
-    color: Color;
-    fill: boolean;
+    fill: Color;
     points: number[][];
     value?: string;
 }
@@ -57,8 +54,7 @@ export type TextLayer = {
     y: number;
     width: number;
     height: number;
-    color: Color;
-    fill: boolean;
+    fill: Color;
     value?: string;
 }
 
@@ -68,8 +64,7 @@ export type NoteLayer = {
     y: number;
     width: number;
     height: number;
-    color: Color;
-    fill: boolean;
+    fill: Color;
     value?: string;
 }
 
@@ -107,7 +102,7 @@ export type canvasState =
     }
     | {
         mode: CanvasMode.Inserting
-        LayerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Path | LayerType.Text | LayerType.Note
+        layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note;
     }
     | {
         mode: CanvasMode.Pencil
@@ -131,3 +126,5 @@ export enum CanvasMode {
     Resizing,
     Pencil,
 }
+
+export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer

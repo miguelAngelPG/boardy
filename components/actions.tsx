@@ -64,7 +64,7 @@ export const Actions = ({ children, side, sideOffset, id, title, imageUrl, orgId
     }
 
     return (
-        <div className="absolute z-50 top-1 right-1">
+        <div className="z-50 top-1 right-1">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     { children }

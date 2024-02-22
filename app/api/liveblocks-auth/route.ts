@@ -39,9 +39,9 @@ export async function POST(request: Request) {
     //     userOrgId: authorization.orgId
     // })
 
-    if (board?.orgId !== authorization.orgId) {
-        return new Response("Unauthorized", { status: 401 });
-    }
+    // if (board?.orgId !== authorization.orgId) {
+    //     return new Response("Unauthorized", { status: 401 });
+    // }
 
     const userInfo = {
         name: user.firstName || 'Teammeate',

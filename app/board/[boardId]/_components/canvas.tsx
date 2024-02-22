@@ -121,7 +121,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
             >
                 <g
                     style={{
-                        transform: `translate(${camera.x}px, ${camera.y}px)`
+                        transform: `translate(${-camera.x}px, ${-camera.y}px)`
                     }}
                 >
                     {

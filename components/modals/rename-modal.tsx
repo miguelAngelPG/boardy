@@ -28,7 +28,6 @@ export const RenameModal = () => {
     }, [initialValues.title])
 
     const handleRename: FormEventHandler<HTMLFormElement> = (e) => {
-        console.log('rename modal', initialValues.id, title)
         e.preventDefault()
 
         mutate({ id: initialValues.id, title })

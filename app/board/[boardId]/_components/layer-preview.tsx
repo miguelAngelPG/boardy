@@ -6,6 +6,7 @@ import { memo } from "react";
 import { Rectangle } from "./rectangle";
 import { Ellipse } from "./ellipse";
 import { Text } from "./text";
+import { Note } from "./note";
 
 interface LayerPreviewProps {
     layerId: string;
@@ -28,6 +29,15 @@ export const LayerPreview = memo((
     }
 
     switch (layer.type) {
+        case LayerType.Note:
+            return (
+                <Note
+                    id={layerId}
+                    layer={layer}
+                    onPointerDown={onLayerPinterDown}
+                    selectionColor={selectionColor}
+                />
+            )
         case LayerType.Text:
             return (
                 <Text

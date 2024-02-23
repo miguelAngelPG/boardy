@@ -306,6 +306,17 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                         )
                     }
                     <SelectionBox onResizeHandlePointerDown={ onResizeHandlePointerDown }/>
+                    {
+                        canvasSate.mode === CanvasMode.SelectionNet && canvasSate.current != null && (
+                            <rect
+                                className="fill-blue-500/5 stroke-blue-500 stroke-1"
+                                x={Math.min(canvasSate.origin.x, canvasSate.current.x)}
+                                y={Math.min(canvasSate.origin.y, canvasSate.current.y)}
+                                width={Math.abs(canvasSate.origin.x - canvasSate.current.x)}
+                                height={Math.abs(canvasSate.origin.y - canvasSate.current.y)}
+                            />
+                        )
+                    }
                     <CursorsPresence/>
                 </g>
             </svg>

@@ -26,7 +26,7 @@ export const SelectionTools = memo(({ camera, setLastUsetColor }: SelectionTools
 
         const indices: number[] =[]
 
-        const arr = liveLayersId.toArray()
+        const arr = liveLayersId.toImmutable()
 
         for (let i = 0; i < arr.length; i++) {
             if (selection.includes(arr[i])) {
@@ -47,7 +47,7 @@ export const SelectionTools = memo(({ camera, setLastUsetColor }: SelectionTools
 
         const indices: number[] =[]
 
-        const arr = liveLayersId.toArray()
+        const arr = liveLayersId.toImmutable()
 
         for (let i = 0; i < arr.length; i++) {
             if (selection.includes(arr[i])) {

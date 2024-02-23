@@ -7,12 +7,13 @@ import { Toolbar } from "./toolbar"
 import { Camera, CanvasMode, Color, Layer, LayerType, Point, Side, XYWH, canvasState } from "@/types/canvas";
 import { useCanRedo, useCanUndo, useHistory, useMutation, useOthersMapped, useStorage } from "@/liveblocks.config";
 import { CursorsPresence } from "./cursors-presence";
-import { connectionIdToColor, pointerEventToCanvasPoint, resizeBounds } from "@/lib/utils";
+import { connectionIdToColor, findIntersectingLayersWithRectangle, pointerEventToCanvasPoint, resizeBounds } from "@/lib/utils";
 import { nanoid } from "nanoid";
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./layer-preview";
 import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
+import { update } from "@/convex/board";
 
 const MAX_LAYERS = 100
 interface CanvasProps {
@@ -102,6 +103,37 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         }
     }, [])
 
+    const updateSelectionNet = useMutation((
+        { storage, setMyPresence },
+        current: Point,
+        origin: Point
+    ) => {
+        const layers = storage.get('layers').toImmutable()
+
+        setCanvasSate({
+            mode: CanvasMode.SelectionNet,
+            origin,
+            current
+        })
+
+        const ids = findIntersectingLayersWithRectangle(
+            layerIds,
+            layers,
+            origin,
+            current
+        )
+
+        setMyPresence({ selection: ids }, { addToHistory: true })
+
+    }, [layerIds])
+
+    const startMultiSelection = useCallback((origin: Point, current: Point) => {
+        if (Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) > 5) {
+            setCanvasSate({ mode: CanvasMode.SelectionNet, origin, current })
+        }   
+    }, [])
+
+
     const resizeSelectedLayer = useMutation((
         { storage, self },
         point: Point,
@@ -138,6 +170,14 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         e.preventDefault()
 
         const current = pointerEventToCanvasPoint(e, camera)
+
+        if (canvasSate.mode === CanvasMode.Pressing) {
+            startMultiSelection(current, canvasSate.origin)
+        }
+
+        if (canvasSate.mode === CanvasMode.SelectionNet) {
+            updateSelectionNet(current, canvasSate.origin)
+        }
 
         if (canvasSate.mode === CanvasMode.Translating) {
             translateSelectedLayers(current)
